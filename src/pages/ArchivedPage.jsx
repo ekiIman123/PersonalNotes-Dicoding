@@ -16,7 +16,7 @@ export default function ArchivedPage({ notes, onDelete, onArchive }) {
   );
 }
 
-ArchivedPage.prototype = {
+ArchivedPage.protoTypes = {
   notes: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,

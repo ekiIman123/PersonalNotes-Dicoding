@@ -24,7 +24,7 @@ export default function HomePage({
   );
 }
 
-HomePage.prototype = {
+HomePage.protoTypes = {
   notes: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,

@@ -19,7 +19,7 @@ function DetailPage({ notes }) {
   );
 }
 
-DetailPage.prototype = {
+DetailPage.protoTypes = {
   notes: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
