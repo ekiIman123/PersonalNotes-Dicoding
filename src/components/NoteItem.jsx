@@ -18,6 +18,7 @@ function NoteItem({ title, body, date, id, onDelete, archived, onArchive }) {
 }
 
 NoteItem.prototype = {
+  id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,

@@ -24,8 +24,8 @@ function ArchiveButton({ id, archived, onArchive }) {
 }
 
 ArchiveButton.propTypes = {
-  id: PropTypes.number.isRequired,
-  archived: PropTypes.bool,
+  id: PropTypes.string.isRequired,
+  archived: PropTypes.bool.isRequired,
   onArchive: PropTypes.func.isRequired,
 };
 

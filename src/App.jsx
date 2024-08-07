@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import DetailPage from "./pages/DetailPage";
 import ArchivedPage from "./pages/ArchivedPage";
 import Navigation from "./components/Navigation";
-import { getInitialData } from "./utils";
+import { getAllNotes, getNote } from "./utils/local-data";
 
 const App = () => {
-  const [notes, setNotes] = useState(getInitialData());
-  const [unfilteredNotes, setUnfilteredNotes] = useState(getInitialData());
+  const [notes, setNotes] = useState([]);
+  const [unfilteredNotes, setUnfilteredNotes] = useState([]);
+
+  useEffect(() => {
+    const initialNotes = getAllNotes();
+    setNotes(initialNotes);
+    setUnfilteredNotes(initialNotes);
+  }, []);
 
   const onSearchHandler = (keyword) => {
     const filteredNotes = unfilteredNotes.filter((note) =>
@@ -78,7 +84,16 @@ const App = () => {
               />
             }
           />
-          <Route path="/archived" element={<ArchivedPage notes={notes} />} />
+          <Route
+            path="/archived"
+            element={
+              <ArchivedPage
+                notes={notes}
+                onArchive={onArchiveHandler}
+                onDelete={onDeleteHandler}
+              />
+            }
+          />
           <Route path="/note/:id" element={<DetailPage notes={notes} />} />
         </Routes>
       </main>

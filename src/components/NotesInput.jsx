@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 function NotesInput({ addNewNote }) {
   const [DataForm, setDataForm] = useState({
@@ -31,11 +32,11 @@ function NotesInput({ addNewNote }) {
     event.preventDefault();
     if (DataForm.title && DataForm.noteBody) {
       const newData = {
-        id: +new Date(),
+        id: `notes-${+new Date()}`,
         title: DataForm.title,
         body: DataForm.noteBody,
+        createdAt: new Date().toISOString(),
         archived: false,
-        createdAt: new Date(),
       };
 
       const validNote = addNewNote(newData);
@@ -87,5 +88,9 @@ function NotesInput({ addNewNote }) {
     </div>
   );
 }
+
+NotesInput.propTypes = {
+  addNewNote: PropTypes.func.isRequired,
+};
 
 export default NotesInput;

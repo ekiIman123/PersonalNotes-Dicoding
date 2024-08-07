@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 function ContentTitle({ title, id }) {
@@ -8,5 +9,10 @@ function ContentTitle({ title, id }) {
     </Link>
   );
 }
+
+ContentTitle.propTypes = {
+  title: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+};
 
 export default ContentTitle;

@@ -1,6 +1,7 @@
 import React from "react";
 import NoteItem from "./NoteItem";
-import { showFormattedDate } from "../utils";
+import { showFormattedDate } from "../utils/local-data";
+import PropTypes from "prop-types";
 
 function NotesList({ notes, caption, onDelete, onArchive }) {
   return (
@@ -23,5 +24,20 @@ function NotesList({ notes, caption, onDelete, onArchive }) {
     </>
   );
 }
+
+NotesList.propTypes = {
+  notes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      body: PropTypes.string.isRequired,
+      createdAt: PropTypes.string.isRequired,
+      archived: PropTypes.bool.isRequired,
+    })
+  ).isRequired,
+  caption: PropTypes.string,
+  onDelete: PropTypes.func.isRequired,
+  onArchive: PropTypes.func.isRequired,
+};
 
 export default NotesList;
