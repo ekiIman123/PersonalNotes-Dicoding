@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { showFormattedDate } from "../utils/local-data";
 
-export default function NoteDetail({ id, title, body, date }) {
+export default function NoteDetail({ title, body, date }) {
   return (
     <>
       <div className={"card container-fluid"}>
@@ -23,7 +23,6 @@ export default function NoteDetail({ id, title, body, date }) {
 }
 
 NoteDetail.propTypes = {
-  id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,

@@ -3,13 +3,7 @@ import PropTypes from "prop-types";
 import NotesList from "../components/NotesList";
 import NotesInput from "../components/NotesInput";
 
-export default function HomePage({
-  notes,
-  onSearch,
-  addNewNote,
-  onDelete,
-  onArchive,
-}) {
+export default function HomePage({ notes, addNewNote, onDelete, onArchive }) {
   return (
     <>
       <NotesInput addNewNote={addNewNote} />
@@ -35,7 +29,6 @@ HomePage.protoTypes = {
     })
   ).isRequired,
   addNewNote: PropTypes.func.isRequired,
-  onSearch: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onArchive: PropTypes.func.isRequired,
 };
