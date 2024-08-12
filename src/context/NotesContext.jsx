@@ -46,10 +46,27 @@ export const NotesProvider = ({ children }) => {
       }
     };
 
-    fetchActiveNotes();
-    fetchArchivedNotes();
-    fetchUser();
+    const fetchData = async () => {
+      if (authedUser) {
+        await fetchActiveNotes();
+        await fetchArchivedNotes();
+      } else {
+        await fetchUser();
+      }
+    };
+
+    fetchData();
   }, [authedUser]);
+
+  const onLoginSuccess = async ({ accessToken }) => {
+    putAccessToken(accessToken);
+    const { error, data } = await getUserLogged();
+
+    if (!error) {
+      setAuthedUser(data);
+      navigate("/");
+    }
+  };
 
   const logoutHandler = () => {
     putAccessToken(null);
@@ -62,16 +79,6 @@ export const NotesProvider = ({ children }) => {
     const { error } = await register(user);
     if (!error) {
       navigate("/login");
-    }
-  };
-
-  const onLoginSuccess = async ({ accessToken }) => {
-    putAccessToken(accessToken);
-    const { error, data } = await getUserLogged();
-
-    if (!error) {
-      setAuthedUser(data);
-      navigate("/");
     }
   };
 

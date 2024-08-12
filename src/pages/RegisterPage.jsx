@@ -17,7 +17,7 @@ export default function RegisterPage() {
         <RegisterInput />
         <p>
           {locale === "en" ? "Back to" : "Kembali ke"}{" "}
-          <Link to="/">{locale === "en" ? "Register" : "Daftar"}</Link>
+          <Link to="/">{locale === "en" ? "Login" : "Masuk"}</Link>
         </p>
       </>
     </section>
