@@ -4,10 +4,13 @@ import NoteDetail from "../components/NoteDetail";
 import { NotesContext } from "../context/NotesContext";
 
 export default function DetailPage() {
-  const { notes } = useContext(NotesContext);
+  const { activeNotes, archivedNotes } = useContext(NotesContext);
 
   const { id } = useParams();
-  const note = notes.find((note) => note.id === id);
+
+  const note = [...activeNotes, ...archivedNotes].find(
+    (note) => note.id === id
+  );
 
   if (!note) return "Tidak ada catatan";
 

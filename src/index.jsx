@@ -6,13 +6,16 @@ import "./styles/style.css";
 import App from "./App";
 import { NotesProvider } from "./context/NotesContext";
 import { LocaleProvider } from "./context/LocaleContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const root = createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <NotesProvider>
       <LocaleProvider>
-        <App />
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
       </LocaleProvider>
     </NotesProvider>
   </BrowserRouter>

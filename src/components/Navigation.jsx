@@ -8,10 +8,12 @@ import {
 } from "react-icons/ri";
 import { NotesContext } from "../context/NotesContext";
 import { LocaleContext } from "../context/LocaleContext";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function Navigation() {
   const { logoutHandler } = useContext(NotesContext);
   const { locale, toggleLocale } = useContext(LocaleContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const location = useLocation();
 
   return (
@@ -34,6 +36,11 @@ export default function Navigation() {
         <li>
           <button className="note-item__locale-button" onClick={toggleLocale}>
             {locale}
+          </button>
+        </li>
+        <li>
+          <button className="note-item__theme-button" onClick={toggleTheme}>
+            {theme}
           </button>
         </li>
         <li>

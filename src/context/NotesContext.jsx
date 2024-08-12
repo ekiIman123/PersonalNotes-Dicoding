@@ -96,40 +96,39 @@ export const NotesProvider = ({ children }) => {
   const onDeleteHandler = async (id) => {
     const { error } = await deleteNote(id);
     if (!error) {
-      if (activeNotes.find((note) => note.id === id)) {
-        const updatedNotes = activeNotes.filter((note) => note.id !== id);
-        setActiveNotes(updatedNotes);
-      } else {
-        const updatedNotes = archivedNotes.filter((note) => note.id !== id);
-        setArchivedNotes(updatedNotes);
-      }
+      setActiveNotes((prevState) => prevState.filter((note) => note.id !== id));
+      setArchivedNotes((prevState) =>
+        prevState.filter((note) => note.id !== id)
+      );
     }
   };
 
   const onArchiveHandler = async (id) => {
-    if (activeNotes.find((note) => note.id === id)) {
-      const note = activeNotes.find((note) => note.id === id);
-      const { error } = note.archived
-        ? await unarchiveNote(id)
-        : await archiveNote(id);
+    const note = activeNotes.find((note) => note.id === id);
+    if (note) {
+      const { error } = await archiveNote(id);
       if (!error) {
         setActiveNotes((prevState) =>
-          prevState.map((note) =>
-            note.id === id ? { ...note, archived: !note.archived } : note
-          )
+          prevState.filter((note) => note.id !== id)
         );
+        setArchivedNotes((prevState) => [
+          ...prevState,
+          { ...note, archived: true },
+        ]);
       }
     } else {
-      const note = archivedNotes.find((note) => note.id === id);
-      const { error } = note.archived
-        ? await unarchiveNote(id)
-        : await archiveNote(id);
-      if (!error) {
-        setArchivedNotes((prevState) =>
-          prevState.map((note) =>
-            note.id === id ? { ...note, archived: !note.archived } : note
-          )
-        );
+      const archivedNote = archivedNotes.find((note) => note.id === id);
+      if (archivedNote) {
+        const { error } = await unarchiveNote(id);
+        if (!error) {
+          setArchivedNotes((prevState) =>
+            prevState.filter((note) => note.id !== id)
+          );
+          setActiveNotes((prevState) => [
+            ...prevState,
+            { ...archivedNote, archived: false },
+          ]);
+        }
       }
     }
   };

@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import { showFormattedDate } from "../utils/local-data";
+import { LocaleContext } from "../context/LocaleContext";
 
 export default function NoteDetail({ title, body, date }) {
+  const { locale } = useContext(LocaleContext);
+
   return (
     <>
       <div className={"card container-fluid"}>
@@ -14,7 +17,7 @@ export default function NoteDetail({ title, body, date }) {
             onClick={() => window.history.back()}
             className={"btn btn-primary"}
           >
-            Back
+            {locale === "en" ? "Back" : "Kembali"}
           </button>
         </div>
       </div>
