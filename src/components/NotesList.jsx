@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import NoteItem from "./NoteItem";
 import { showFormattedDate } from "../utils/local-data";
 import PropTypes from "prop-types";
+import { LocaleContext } from "../context/LocaleContext";
 
-function NotesList({ notes, caption, onDelete, onArchive }) {
+export default function NotesList({ notes, caption }) {
+  const { locale } = useContext(LocaleContext);
+
   return (
     <>
       {notes.length !== 0 ? (
@@ -12,14 +15,16 @@ function NotesList({ notes, caption, onDelete, onArchive }) {
             <NoteItem
               key={note.id}
               date={showFormattedDate(note.createdAt)}
-              onDelete={onDelete}
-              onArchive={onArchive}
               {...note}
             />
           ))}
         </div>
       ) : (
-        <p className="notes-list__empty-message">No {caption} notes.</p>
+        <p className="notes-list__empty-message">
+          {locale === "en"
+            ? `No ${caption} notes.`
+            : `Tidak ada Catatan ${caption}.`}
+        </p>
       )}
     </>
   );
@@ -35,9 +40,5 @@ NotesList.propTypes = {
       archived: PropTypes.bool.isRequired,
     })
   ).isRequired,
-  caption: PropTypes.string,
-  onDelete: PropTypes.func.isRequired,
-  onArchive: PropTypes.func.isRequired,
+  caption: PropTypes.string.isRequired,
 };
-
-export default NotesList;

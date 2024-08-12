@@ -1,22 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
+import { NotesContext } from "../context/NotesContext";
+import { LocaleContext } from "../context/LocaleContext";
 
-function ArchiveButton({ id, archived, onArchive }) {
+function ArchiveButton({ id, archived }) {
+  const { locale } = useContext(LocaleContext);
+  const { onArchiveHandler } = useContext(NotesContext);
+
   return (
     <>
       {!archived ? (
         <button
           className="note-item__archive-button"
-          onClick={() => onArchive(id)}
+          onClick={() => onArchiveHandler(id)}
         >
-          Archive
+          {locale === "en" ? "Archive" : "Arsipkan"}
         </button>
       ) : (
         <button
           className="note-item__archive-button"
-          onClick={() => onArchive(id)}
+          onClick={() => onArchiveHandler(id)}
         >
-          Unarchive
+          {locale === "en" ? "Unarchive" : "Tidak diarsipkan"}
         </button>
       )}
     </>
@@ -26,7 +31,6 @@ function ArchiveButton({ id, archived, onArchive }) {
 ArchiveButton.propTypes = {
   id: PropTypes.string.isRequired,
   archived: PropTypes.bool.isRequired,
-  onArchive: PropTypes.func.isRequired,
 };
 
 export default ArchiveButton;

@@ -3,11 +3,11 @@ import DeleteButton from "./DeleteButton";
 import ArchiveButton from "./ArchiveButton";
 import PropTypes from "prop-types";
 
-function ItemAction({ id, onDelete, archived, onArchive }) {
+function ItemAction({ id, archived }) {
   return (
     <div className="note-item__action">
-      <DeleteButton id={id} onDelete={onDelete} />
-      <ArchiveButton id={id} archived={archived} onArchive={onArchive} />
+      <DeleteButton id={id} />
+      <ArchiveButton id={id} archived={archived} />
     </div>
   );
 }
@@ -15,8 +15,6 @@ function ItemAction({ id, onDelete, archived, onArchive }) {
 ItemAction.propTypes = {
   id: PropTypes.string.isRequired,
   archived: PropTypes.bool.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  onArchive: PropTypes.func.isRequired,
 };
 
 export default ItemAction;

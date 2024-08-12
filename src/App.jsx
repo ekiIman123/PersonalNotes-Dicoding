@@ -1,100 +1,46 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
+import { LocaleContext, LocaleProvider } from "./context/LocaleContext";
+import { NotesContext, NotesProvider } from "./context/NotesContext";
+
 import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
 import DetailPage from "./pages/DetailPage";
 import ArchivedPage from "./pages/ArchivedPage";
+import RegisterPage from "./pages/RegisterPage";
 import Navigation from "./components/Navigation";
-import { getAllNotes, getNote } from "./utils/local-data";
 
 const App = () => {
-  const [notes, setNotes] = useState([]);
-  const [unfilteredNotes, setUnfilteredNotes] = useState([]);
+  const { authedUser } = useContext(NotesContext);
+  const { locale } = useContext(LocaleContext);
 
-  useEffect(() => {
-    const initialNotes = getAllNotes();
-    setNotes(initialNotes);
-    setUnfilteredNotes(initialNotes);
-  }, []);
-
-  const onSearchHandler = (keyword) => {
-    const filteredNotes = unfilteredNotes.filter((note) =>
-      note.title.toLowerCase().includes(keyword.toLowerCase())
+  if (!authedUser) {
+    return (
+      <Routes>
+        <Route
+          path="/*"
+          element={
+            <div className="note-app">
+              <LoginPage />
+            </div>
+          }
+        ></Route>
+        <Route path="/regist" element={<RegisterPage />}></Route>
+      </Routes>
     );
-
-    setNotes(filteredNotes);
-  };
-
-  const addNewNoteHandler = (newDataNote) => {
-    try {
-      setNotes((prevState) => [...prevState, newDataNote]);
-      setUnfilteredNotes((prevState) => [...prevState, newDataNote]);
-      return {
-        error: false,
-        message: "Success!",
-      };
-    } catch (error) {
-      return {
-        error: true,
-        message: "Failed!",
-      };
-    }
-  };
-
-  const onDeleteHandler = (id) => {
-    const updatedNotes = notes.filter((note) => note.id !== id);
-    setNotes(updatedNotes);
-    setUnfilteredNotes(updatedNotes);
-  };
-
-  const onArchiveHandler = (id) => {
-    setNotes((prevState) =>
-      prevState.map((note) =>
-        note.id === id ? { ...note, archived: !note.archived } : note
-      )
-    );
-    setUnfilteredNotes((prevState) =>
-      prevState.map((note) =>
-        note.id === id ? { ...note, archived: !note.archived } : note
-      )
-    );
-  };
-
-  const onDetailHandler = (id) => {
-    const note = notes.find((note) => note.id === id);
-    return note || null;
-  };
+  }
 
   return (
-    <div className="contact-app">
-      <header className="contact-app__header">
-        <h1>Aplikasi Kontak</h1>
+    <div className="note-app">
+      <header className="note-app__header">
+        <h1>{locale === "en" ? "Notes App" : "Aplikasi Catatan"}</h1>
         <Navigation />
       </header>
       <main>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <HomePage
-                notes={notes}
-                onSearch={onSearchHandler}
-                addNewNote={addNewNoteHandler}
-                onDelete={onDeleteHandler}
-                onArchive={onArchiveHandler}
-              />
-            }
-          />
-          <Route
-            path="/archived"
-            element={
-              <ArchivedPage
-                notes={notes}
-                onArchive={onArchiveHandler}
-                onDelete={onDeleteHandler}
-              />
-            }
-          />
-          <Route path="/note/:id" element={<DetailPage notes={notes} />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/archived" element={<ArchivedPage />} />
+          <Route path="/note/:id" element={<DetailPage />} />
         </Routes>
       </main>
     </div>

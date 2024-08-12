@@ -1,34 +1,22 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useContext } from "react";
 import NotesList from "../components/NotesList";
 import NotesInput from "../components/NotesInput";
+import { NotesContext } from "../context/NotesContext";
+import { LocaleContext } from "../context/LocaleContext";
 
-export default function HomePage({ notes, addNewNote, onDelete, onArchive }) {
+export default function HomePage() {
+  const { activeNotes } = useContext(NotesContext);
+  const { locale } = useContext(LocaleContext);
+
   return (
     <>
-      <NotesInput addNewNote={addNewNote} />
-      <h2>Active Notes</h2>
+      <NotesInput />
+      <h2>{locale === "en" ? "Active Notes" : "Catatan Aktif"} </h2>
+      <br />
       <NotesList
-        notes={notes.filter((note) => !note.archived)}
-        caption={"active"}
-        onDelete={onDelete}
-        onArchive={onArchive}
+        notes={activeNotes}
+        caption={locale === "en" ? "active" : "aktif"}
       />
     </>
   );
 }
-
-HomePage.protoTypes = {
-  notes: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      body: PropTypes.string.isRequired,
-      createdAt: PropTypes.string.isRequired,
-      archived: PropTypes.bool.isRequired,
-    })
-  ).isRequired,
-  addNewNote: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  onArchive: PropTypes.func.isRequired,
-};

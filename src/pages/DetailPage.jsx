@@ -1,9 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import NoteDetail from "../components/NoteDetail";
+import { NotesContext } from "../context/NotesContext";
 
-function DetailPage({ notes }) {
+export default function DetailPage() {
+  const { notes } = useContext(NotesContext);
+
   const { id } = useParams();
   const note = notes.find((note) => note.id === id);
 
@@ -18,17 +20,3 @@ function DetailPage({ notes }) {
     />
   );
 }
-
-DetailPage.protoTypes = {
-  notes: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      body: PropTypes.string.isRequired,
-      createdAt: PropTypes.string.isRequired,
-      archived: PropTypes.bool.isRequired,
-    })
-  ).isRequired,
-};
-
-export default DetailPage;

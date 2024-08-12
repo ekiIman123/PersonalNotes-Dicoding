@@ -1,96 +1,91 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useContext, useState } from "react";
+import { NotesContext } from "../context/NotesContext";
+import useInput from "../hooks/useInput";
+import { LocaleContext } from "../context/LocaleContext";
 
-function NotesInput({ addNewNote }) {
-  const [DataForm, setDataForm] = useState({
-    title: "",
-    noteBody: "",
-    noteBodyLength: 0,
-    noteAlert: false,
-  });
+export default function NotesInput() {
+  const { locale } = useContext(LocaleContext);
+  const { addNewNoteHandler } = useContext(NotesContext);
 
-  const onTitleChange = (event) => {
-    event.preventDefault();
-    setDataForm({
-      ...DataForm,
-      title: event.target.value,
-    });
-  };
+  const [title, onChangeTitle, resetTitle] = useInput("");
+
+  const [noteBody, setNoteBody] = useState("");
+  const [noteBodyLength, setNoteBodyLength] = useState(0);
+  const [noteAlert, setNoteAlert] = useState(false);
 
   const onNoteBodyChange = (event) => {
-    event.preventDefault();
-    const inputText = event.target.value.slice(0, 50);
-    setDataForm({
-      ...DataForm,
-      noteBody: inputText,
-      noteBodyLength: inputText.length,
-      noteAlert: inputText.length >= 50,
-    });
+    const inputText = event.target.value;
+    if (inputText.length <= 50) {
+      setNoteBody(inputText);
+      setNoteBodyLength(inputText.length);
+      setNoteAlert(false);
+    } else {
+      setNoteAlert(true);
+    }
   };
 
   const onSubmit = (event) => {
     event.preventDefault();
-    if (DataForm.title && DataForm.noteBody) {
+    if (title && noteBody) {
       const newData = {
         id: `notes-${+new Date()}`,
-        title: DataForm.title,
-        body: DataForm.noteBody,
+        title: title,
+        body: noteBody,
         createdAt: new Date().toISOString(),
         archived: false,
       };
 
-      const validNote = addNewNote(newData);
+      const validNote = addNewNoteHandler(newData);
 
       if (validNote) {
-        setDataForm({
-          title: "",
-          noteBody: "",
-          noteBodyLength: 0,
-          noteAlert: false,
-        });
+        resetTitle();
+        setNoteBody("");
+        setNoteBodyLength(0);
+        setNoteAlert(false);
       }
     } else {
       alert(
-        "Please make sure the title and note body are filled and the character limit has not been exceeded."
+        locale === "en"
+          ? "Please make sure the title and note body are filled and the character limit has not been exceeded."
+          : "Pastikan judul dan isi catatan sudah terisi dan batas karakter belum terlampaui."
       );
     }
   };
 
   return (
     <div className="note-input">
-      <h2>New Note</h2>
-      <form>
+      <h2>{locale === "en" ? "New Note" : "Catatan Baru"}</h2>
+      <form onSubmit={onSubmit}>
         <p className="note-input__title__char-limit">
-          {DataForm.noteAlert
-            ? `Maximum character limit has been reached`
-            : `Character left: ${50 - DataForm.noteBodyLength}`}
+          {noteAlert
+            ? locale === "en"
+              ? "Maximum character limit has been reached"
+              : "Batas karakter maksimum telah tercapai"
+            : locale === "en"
+            ? `Character left: ${50 - noteBodyLength}`
+            : `Sisa karakter: ${50 - noteBodyLength}`}
         </p>
         <input
           className="note-input__title"
           type="text"
-          placeholder="Type your title..."
+          placeholder={
+            locale === "en" ? "Type your title..." : "Tulis judul..."
+          }
           required
-          value={DataForm.title}
-          onChange={onTitleChange}
+          value={title}
+          onChange={onChangeTitle}
         />
         <textarea
           className="note-input__body"
-          type="text"
-          placeholder="Your note here..."
+          placeholder={
+            locale === "en" ? "Your note here..." : "Isi catatan di sini..."
+          }
           required
-          value={DataForm.noteBody}
+          value={noteBody}
           onChange={onNoteBodyChange}
-        ></textarea>
-        <button type="submit" onClick={onSubmit}>
-          Create
-        </button>
+        />
+        <button type="submit">{locale === "en" ? "Create" : "Buat"}</button>
       </form>
     </div>
   );
 }
-
-NotesInput.propTypes = {
-  addNewNote: PropTypes.func.isRequired,
-};
-
-export default NotesInput;

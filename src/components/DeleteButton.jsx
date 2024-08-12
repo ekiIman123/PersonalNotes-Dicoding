@@ -1,17 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
+import { NotesContext } from "../context/NotesContext";
+import { LocaleContext } from "../context/LocaleContext";
 
-function DeleteButton({ id, onDelete }) {
+function DeleteButton({ id }) {
+  const { onDeleteHandler } = useContext(NotesContext);
+  const { locale } = useContext(LocaleContext);
+
   return (
-    <button className="note-item__delete-button" onClick={() => onDelete(id)}>
-      Delete
+    <button
+      className="note-item__delete-button"
+      onClick={() => onDeleteHandler(id)}
+    >
+      {locale === "en" ? "Delete" : "Hapus"}
     </button>
   );
 }
 
 DeleteButton.propTypes = {
   id: PropTypes.string.isRequired,
-  onDelete: PropTypes.func.isRequired,
 };
 
 export default DeleteButton;

@@ -5,6 +5,7 @@
 }
 
 body {
+  padding: 1rem 5rem 1rem 5rem;
   font-family: "Inter", sans-serif;
   background-color: #202124;
   color: white;
@@ -33,6 +34,7 @@ textarea::placeholder {
   justify-content: center;
   padding: 4px 16px;
   border-bottom: 1px solid #aaa;
+  margin-bottom: 1.5rem;
 }
 
 .note-app__header h1 {
@@ -44,8 +46,7 @@ textarea::placeholder {
 .navigation ul {
   display: flex;
   height: 100%;
-  gap: 2rem;
-  padding-top: 15px;
+  gap: 1.5rem;
 }
 
 .navigation ul li {
@@ -56,6 +57,7 @@ textarea::placeholder {
 }
 
 .navigation ul li a {
+  padding-top: 8px;
   font-size: 28px;
   color: white;
 }
@@ -155,6 +157,22 @@ textarea::placeholder {
 
 .note-item__action {
   display: flex;
+}
+
+.note-item__locale-button,
+.note-item__logout-button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: "Inter", sans-serif;
+}
+
+.note-item__logout-button {
+  padding-top: 5px;
+  font-size: 1rem;
 }
 
 .note-item__delete-button,
