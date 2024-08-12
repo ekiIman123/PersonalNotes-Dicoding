@@ -181,6 +181,12 @@ textarea::placeholder {
   font-family: "Inter", sans-serif;
 }
 
+.note-item__logout-button {
+  border: 1px solid var(--text-color);
+  border-radius: 5px;
+  padding: 3px;
+}
+
 .note-item__theme-button,
 .note-item__logout-button {
   padding-top: 5px;
@@ -217,11 +223,79 @@ textarea::placeholder {
   color: #b00020;
 }
 
+.note-detail {
+  margin: 3rem 5rem;
+}
+
+.note-detail__content {
+  padding: 1rem 3rem;
+  border: 3px solid var(--text-color);
+  border-radius: 15px;
+}
+
+.note-detail__title {
+  font-size: 2.3rem;
+  padding: 1rem 0.5rem;
+}
+
+.note-detail__body {
+  font-size: 1.75rem;
+}
+
+.note-detail__date {
+  font-size: 1.3rem;
+}
+
+.note-detail__back-button,
+.note-login__enter-button,
+.note-regist__enter-button {
+  font-size: 1rem;
+  border-radius: 5px;
+  background-color: var(--text-color);
+  color: var(--background-color);
+  padding: 2px 5px;
+  margin: 2rem 0.5rem;
+  cursor: pointer;
+}
+
 .notes-app__footer {
   border-top: 1px solid #aaa;
   margin-top: 50px;
   padding: 30px;
   text-align: center;
+}
+
+.loading-indicator {
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20vh;
+  flex-direction: column;
+}
+
+.spinner {
+  border: 8px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #000;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-indicator p {
+  margin-top: 10px;
+  font-size: 18px;
+  color: var(--text-color);
 }
 
 @media only screen and (min-width: 500px) {

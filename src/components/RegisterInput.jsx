@@ -64,7 +64,9 @@ export default function RegisterInput() {
       {!passwordsMatch && (
         <p style={{ color: "red" }}>Passwords do not match</p>
       )}
-      <button disabled={!passwordsMatch}>Register</button>
+      <button className="note-regist__enter-button" disabled={!passwordsMatch}>
+        Register
+      </button>
     </form>
   );
 }

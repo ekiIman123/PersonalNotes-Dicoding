@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import {
   getActiveNotes,
   getArchivedNotes,
-  getNote,
   addNote,
   deleteNote,
   archiveNote,
@@ -19,6 +18,7 @@ export const NotesProvider = ({ children }) => {
   const [activeNotes, setActiveNotes] = useState([]);
   const [archivedNotes, setArchivedNotes] = useState([]);
   const [authedUser, setAuthedUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -49,10 +49,11 @@ export const NotesProvider = ({ children }) => {
     fetchActiveNotes();
     fetchArchivedNotes();
     fetchUser();
-  }, []);
+  }, [authedUser]);
 
   const logoutHandler = () => {
     putAccessToken(null);
+    localStorage.removeItem("accessToken");
     setAuthedUser(null);
     navigate("/login");
   };
@@ -60,33 +61,31 @@ export const NotesProvider = ({ children }) => {
   const onRegisterHandler = async (user) => {
     const { error } = await register(user);
     if (!error) {
-      navigate("/");
+      navigate("/login");
     }
   };
 
   const onLoginSuccess = async ({ accessToken }) => {
     putAccessToken(accessToken);
     const { error, data } = await getUserLogged();
+
     if (!error) {
       setAuthedUser(data);
       navigate("/");
     }
   };
 
-  const onSearchHandler = (keyword) => {
-    const filteredNotes = unfilteredNotes.filter((note) =>
-      note.title.toLowerCase().includes(keyword.toLowerCase())
-    );
-    setNotes(filteredNotes);
-  };
-
   const addNewNoteHandler = async (newDataNote) => {
+    setIsLoading(true);
     const { error, data } = await addNote({
       title: newDataNote.title,
       body: newDataNote.body,
     });
     if (!error) {
       setActiveNotes((prevState) => [...prevState, data]);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
       return { error: false, message: "Success!" };
     } else {
       return { error: true, message: "Failed!" };
@@ -94,16 +93,21 @@ export const NotesProvider = ({ children }) => {
   };
 
   const onDeleteHandler = async (id) => {
+    setIsLoading(true);
     const { error } = await deleteNote(id);
     if (!error) {
       setActiveNotes((prevState) => prevState.filter((note) => note.id !== id));
       setArchivedNotes((prevState) =>
         prevState.filter((note) => note.id !== id)
       );
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     }
   };
 
   const onArchiveHandler = async (id) => {
+    setIsLoading(true);
     const note = activeNotes.find((note) => note.id === id);
     if (note) {
       const { error } = await archiveNote(id);
@@ -131,6 +135,9 @@ export const NotesProvider = ({ children }) => {
         }
       }
     }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
 
   return (
@@ -139,10 +146,11 @@ export const NotesProvider = ({ children }) => {
         activeNotes,
         archivedNotes,
         authedUser,
+        isLoading,
+        setIsLoading,
         logoutHandler,
         onRegisterHandler,
         onLoginSuccess,
-        onSearchHandler,
         addNewNoteHandler,
         onDeleteHandler,
         onArchiveHandler,

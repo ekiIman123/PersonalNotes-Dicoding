@@ -8,14 +8,14 @@ export default function NoteDetail({ title, body, date }) {
 
   return (
     <>
-      <div className={"card container-fluid"}>
-        <div className={"card-body"}>
-          <h5 className={"card-title"}>{title}</h5>
-          <p className={"card-text"}>{showFormattedDate(date)}</p>
-          <p className={"card-text"}>{body}</p>
+      <div className={"note-detail"}>
+        <div className={"note-detail__content"}>
+          <h5 className={"note-detail__title"}>{title}</h5>
+          <p className={"note-detail__date"}>{showFormattedDate(date)}</p>
+          <p className={"note-detail__body"}>{body}</p>
           <button
             onClick={() => window.history.back()}
-            className={"btn btn-primary"}
+            className={"note-detail__back-button"}
           >
             {locale === "en" ? "Back" : "Kembali"}
           </button>

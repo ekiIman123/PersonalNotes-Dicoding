@@ -3,9 +3,10 @@ import NotesList from "../components/NotesList";
 import NotesInput from "../components/NotesInput";
 import { NotesContext } from "../context/NotesContext";
 import { LocaleContext } from "../context/LocaleContext";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 export default function HomePage() {
-  const { activeNotes } = useContext(NotesContext);
+  const { activeNotes, isLoading } = useContext(NotesContext);
   const { locale } = useContext(LocaleContext);
 
   return (
@@ -13,10 +14,14 @@ export default function HomePage() {
       <NotesInput />
       <h2>{locale === "en" ? "Active Notes" : "Catatan Aktif"} </h2>
       <br />
-      <NotesList
-        notes={activeNotes}
-        caption={locale === "en" ? "active" : "aktif"}
-      />
+      {isLoading ? (
+        <LoadingIndicator />
+      ) : (
+        <NotesList
+          notes={activeNotes}
+          caption={locale === "en" ? "active" : "aktif"}
+        />
+      )}
     </>
   );
 }
