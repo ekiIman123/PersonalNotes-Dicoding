@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import {
   getActiveNotes,
   getArchivedNotes,
@@ -166,4 +167,8 @@ export const NotesProvider = ({ children }) => {
       {children}
     </NotesContext.Provider>
   );
+};
+
+NotesProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
